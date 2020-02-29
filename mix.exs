@@ -25,6 +25,8 @@ defmodule HomeMiku.MixProject do
     [
       {:credo, "~> 1.2", only: [:dev, :test], runtime: false},
       {:gettext, "~> 0.17"},
+      {:plug_cowboy, "~> 2.1"},
+      {:poison, "~> 4.0"},
       {:slack, "~> 0.19"}
     ]
   end
