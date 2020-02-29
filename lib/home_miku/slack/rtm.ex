@@ -6,6 +6,8 @@ defmodule HomeMiku.Slack.Rtm do
     {:ok, state}
   end
 
+  def handle_event(%{type: "message", subtype: "message_deleted"}, _, state), do: {:ok, state}
+
   def handle_event(message = %{type: "message"}, slack, state) do
     send_message "I got a message!", message.channel, slack
     {:ok, state}
