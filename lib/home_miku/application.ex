@@ -11,6 +11,7 @@ defmodule HomeMiku.Application do
     children = [
       # Starts a worker by calling: HomeMiku.Worker.start_link(arg)
       # {HomeMiku.Worker, arg}
+      {Plug.Cowboy, scheme: :http, plug: HomeMiku.Web.Router, options: [port: 8181]}
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
