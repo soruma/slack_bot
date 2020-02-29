@@ -6,6 +6,8 @@ defmodule HomeMiku.Application do
   use Application
 
   def start(_type, _args) do
+    Slack.Bot.start_link(HomeMiku.Slack.Rtm, [], System.get_env("SLACK_BOT_API_TOKEN"))
+
     children = [
       # Starts a worker by calling: HomeMiku.Worker.start_link(arg)
       # {HomeMiku.Worker, arg}
