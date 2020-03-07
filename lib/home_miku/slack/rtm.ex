@@ -6,13 +6,10 @@ defmodule HomeMiku.Slack.Rtm do
     {:ok, state}
   end
 
-  def handle_event(%{type: "message", subtype: "message_changed"}, _, state), do: {:ok, state}
-  def handle_event(%{type: "message", subtype: "message_deleted"}, _, state), do: {:ok, state}
-  def handle_event(%{type: "message", subtype: "channel_join"}, _, state), do: {:ok, state}
-
   def handle_event(message = %{type: "message"}, slack, state) do
-    if message_to_myself(message, slack) do
-      send_message "I got a message!", message.channel, slack
+    case HomeMiku.Slack.Bot.react_to_message(message, slack) do
+      {:send_message, result} -> send_message(result, message.channel, slack)
+      _ -> :skip
     end
 
     {:ok, state}
@@ -27,9 +24,4 @@ defmodule HomeMiku.Slack.Rtm do
     {:ok, state}
   end
   def handle_info(_, _, state), do: {:ok, state}
-
-  @spec message_to_myself(%{text: String.t}, Slack.State.t) :: boolean
-  def message_to_myself(message, slack) do
-    String.match?(message.text, ~r/<@#{slack.me.id}>/)
-  end
 end
