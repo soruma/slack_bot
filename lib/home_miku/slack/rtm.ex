@@ -11,7 +11,10 @@ defmodule HomeMiku.Slack.Rtm do
   def handle_event(%{type: "message", subtype: "channel_join"}, _, state), do: {:ok, state}
 
   def handle_event(message = %{type: "message"}, slack, state) do
-    send_message "I got a message!", message.channel, slack
+    if message_to_myself(message, slack) do
+      send_message "I got a message!", message.channel, slack
+    end
+
     {:ok, state}
   end
   def handle_event(_, _, state), do: {:ok, state}
@@ -24,4 +27,9 @@ defmodule HomeMiku.Slack.Rtm do
     {:ok, state}
   end
   def handle_info(_, _, state), do: {:ok, state}
+
+  @spec message_to_myself(%{text: String.t}, Slack.State.t) :: boolean
+  def message_to_myself(message, slack) do
+    String.match?(message.text, ~r/<@#{slack.me.id}>/)
+  end
 end
