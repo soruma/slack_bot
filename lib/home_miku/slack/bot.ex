@@ -13,7 +13,7 @@ defmodule HomeMiku.Slack.Bot do
     interpret_attachment(attachments)
 
     if attachment.title == "Approached at home" do
-      {:send_message, "Welcome back, master."}
+      {:send_message, "Welcome back, master :heart:"}
     else
       {:ok}
     end
