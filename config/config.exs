@@ -1,3 +1,3 @@
 import Config
 
-config :gettext, :default_locale, "ja"
+import_config "#{Mix.env}.exs"
