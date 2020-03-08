@@ -23,7 +23,7 @@ defmodule HomeMiku.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:credo, "~> 0.3", only: [:dev, :test], runtime: false},
+      {:credo, "~> 1.2", only: [:dev, :test], runtime: false},
       {:gettext, "~> 0.17"},
       {:slack, "~> 0.19"}
     ]
