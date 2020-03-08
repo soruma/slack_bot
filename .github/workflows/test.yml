@@ -29,9 +29,6 @@ jobs:
       with:
         path: deps
         key: ${{ runner.os }}-hex-${{ hashFiles('**/mix.lock') }}
-        restore-keys: |
-          ${{ runner.os }}-hex-${{ hashFiles('**/mix.lock') }}
-          ${{ runner.os }}-hex-
 
     - run: mix deps.get
 
