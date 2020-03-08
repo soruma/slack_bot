@@ -14,17 +14,17 @@ defmodule HomeMiku.Slack.BotTest do
 
   describe "react_to_message/2" do
     test "skip if subtype is 'message_changed'", %{state: state} = _context do
-      message = %{type: "message", subtype: "message_changed"}
+      message = %{subtype: "message_changed"}
       assert {:skip} = HomeMiku.Slack.Bot.react_to_message(message, state)
     end
 
     test "skip if subtype is 'message_deleted'", %{state: state} = _context do
-      message = %{type: "message", subtype: "message_deleted"}
+      message = %{subtype: "message_deleted"}
       assert {:skip} = HomeMiku.Slack.Bot.react_to_message(message, state)
     end
 
     test "skip if subtype is 'channel_join'", %{state: state} = _context do
-      message = %{type: "message", subtype: "channel_join"}
+      message = %{subtype: "channel_join"}
       assert {:skip} = HomeMiku.Slack.Bot.react_to_message(message, state)
     end
 
