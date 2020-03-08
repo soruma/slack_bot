@@ -28,12 +28,18 @@ defmodule HomeMiku.Slack.BotTest do
       assert {:skip} = HomeMiku.Slack.Bot.react_to_message(message, state)
     end
 
-    test "call interpret_attachment if message is attacthment" do
-      # todo
+    test "return send_message if message is attacthment", context do
+      attachments = %{attachments: [%{title: "Approached at home"}]}
+
+      assert {:send_message, "Welcome back, master :heart:"} =
+        HomeMiku.Slack.Bot.react_to_message(attachments, context[:state])
     end
 
-    test "call interpret_message if message is other tuple" do
-      # todo
+    test "return send_message if message is other tuple", context do
+      message = %{text: "Hi <@#{context[:user_id]}> ."}
+
+      assert {:send_message, "I got a message!"} =
+        HomeMiku.Slack.Bot.react_to_message(message, context[:state])
     end
   end
 
