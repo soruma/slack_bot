@@ -1,4 +1,6 @@
 defmodule HomeMiku.Slack.Bot do
+  import HomeMiku.Gettext
+
   @spec react_to_message(tuple, Slack.State.t) :: tuple
   def react_to_message(%{type: "message", subtype: "message_changed"}, _), do: {:ok}
   def react_to_message(%{type: "message", subtype: "message_deleted"}, _), do: {:ok}
@@ -13,7 +15,7 @@ defmodule HomeMiku.Slack.Bot do
     interpret_attachment(attachments)
 
     if attachment.title == "Approached at home" do
-      {:send_message, "Welcome back, master :heart:"}
+      {:send_message, gettext("Welcome back, master :heart:")}
     else
       {:ok}
     end
@@ -22,7 +24,7 @@ defmodule HomeMiku.Slack.Bot do
   @spec interpret_message(tuple, Slack.State.t) :: tuple
   def interpret_message(message, slack) do
     if message_to_myself(message, slack) do
-      {:send_message, "I got a message!"}
+      {:send_message, gettext("I got a message!")}
     else
       {:ok}
     end

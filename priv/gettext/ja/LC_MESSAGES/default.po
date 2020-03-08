@@ -1,0 +1,14 @@
+msgid ""
+msgstr ""
+"Language: ja\n"
+"Plural-Forms: nplurals=1\n"
+
+#, elixir-format
+#: lib/home_miku/slack/bot.ex:27
+msgid "I got a message!"
+msgstr "メッセージを取得しました!"
+
+#, elixir-format
+#: lib/home_miku/slack/bot.ex:18
+msgid "Welcome back, master :heart:"
+msgstr "お帰りなさいませ、ご主人様 :heart:"

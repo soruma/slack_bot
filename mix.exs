@@ -7,6 +7,7 @@ defmodule HomeMiku.MixProject do
       version: "0.1.0",
       elixir: "~> 1.10",
       start_permanent: Mix.env() == :prod,
+      compilers: [:gettext] ++ Mix.compilers,
       deps: deps()
     ]
   end
@@ -14,7 +15,7 @@ defmodule HomeMiku.MixProject do
   # Run "mix help compile.app" to learn about applications.
   def application do
     [
-      extra_applications: [:logger],
+      extra_applications: [:gettext, :logger],
       mod: {HomeMiku.Application, []}
     ]
   end
@@ -23,6 +24,7 @@ defmodule HomeMiku.MixProject do
   defp deps do
     [
       {:credo, "~> 0.3", only: [:dev, :test], runtime: false},
+      {:gettext, "~> 0.17"},
       {:slack, "~> 0.19"}
     ]
   end
