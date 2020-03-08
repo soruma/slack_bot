@@ -1,4 +1,6 @@
 defmodule HomeMiku.Slack.Rtm do
+  @moduledoc false
+
   use Slack
 
   def handle_connect(slack, state) do

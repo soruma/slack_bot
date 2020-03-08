@@ -1,4 +1,6 @@
 defmodule HomeMiku.Slack.Bot do
+  @moduledoc false
+
   import HomeMiku.Gettext
 
   @spec react_to_message(tuple, Slack.State.t) :: tuple
