@@ -1,6 +1,6 @@
-defmodule HomeMiku.Slack.BotTest do
+defmodule SlackBot.Slack.BotTest do
   use ExUnit.Case
-  doctest HomeMiku.Slack.Bot
+  doctest SlackBot.Slack.Bot
 
   setup do
     user_id = "UMYUSERID"
@@ -15,72 +15,72 @@ defmodule HomeMiku.Slack.BotTest do
   describe "react_to_message/2" do
     test "skip if subtype is 'message_changed'", %{state: state} = _context do
       message = %{subtype: "message_changed"}
-      assert {:skip} = HomeMiku.Slack.Bot.react_to_message(message, state)
+      assert {:skip} = SlackBot.Slack.Bot.react_to_message(message, state)
     end
 
     test "skip if subtype is 'message_deleted'", %{state: state} = _context do
       message = %{subtype: "message_deleted"}
-      assert {:skip} = HomeMiku.Slack.Bot.react_to_message(message, state)
+      assert {:skip} = SlackBot.Slack.Bot.react_to_message(message, state)
     end
 
     test "skip if subtype is 'channel_join'", %{state: state} = _context do
       message = %{subtype: "channel_join"}
-      assert {:skip} = HomeMiku.Slack.Bot.react_to_message(message, state)
+      assert {:skip} = SlackBot.Slack.Bot.react_to_message(message, state)
     end
 
     test "return send_message if message is attacthment", context do
       attachments = %{attachments: [%{title: "Approached at home"}]}
 
       assert {:send_message, "Welcome back, master :heart:"} =
-        HomeMiku.Slack.Bot.react_to_message(attachments, context[:state])
+        SlackBot.Slack.Bot.react_to_message(attachments, context[:state])
     end
 
     test "return send_message if message is other tuple", context do
       message = %{text: "Hi <@#{context[:user_id]}> ."}
 
       assert {:send_message, "I got a message!"} =
-        HomeMiku.Slack.Bot.react_to_message(message, context[:state])
+        SlackBot.Slack.Bot.react_to_message(message, context[:state])
     end
   end
 
   describe "interpret_attachment/1" do
     test "attachement.title is 'Approached at home'" do
       attachments = [%{title: "Approached at home"}]
-      assert {:send_message, _} = HomeMiku.Slack.Bot.interpret_attachment(attachments)
+      assert {:send_message, _} = SlackBot.Slack.Bot.interpret_attachment(attachments)
     end
 
     test "attachment.title is other text" do
       attachments = [%{title: "Other text"}]
-      assert {:skip} = HomeMiku.Slack.Bot.interpret_attachment(attachments)
+      assert {:skip} = SlackBot.Slack.Bot.interpret_attachment(attachments)
     end
   end
 
   describe "interpret_message/2" do
     test "respond to messages addressed to other", context do
       message = %{text: "Hi <@UOTHERUSERID> . How are you."}
-      assert {:skip} = HomeMiku.Slack.Bot.interpret_message(message, context[:state])
+      assert {:skip} = SlackBot.Slack.Bot.interpret_message(message, context[:state])
     end
 
     test "respond to messages addressed to me", context do
       message = %{text: "Hi <@#{context[:user_id]}> . How are you."}
-      assert {:send_message, _} = HomeMiku.Slack.Bot.interpret_message(message, context[:state])
+      assert {:send_message, _} = SlackBot.Slack.Bot.interpret_message(message, context[:state])
     end
   end
 
   describe "message_to_myself/2" do
     test "it is a message not assigned to anyone", context do
       message = %{text: "Hi"}
-      assert HomeMiku.Slack.Bot.message_to_myself(message, context[:state]) == false
+      assert SlackBot.Slack.Bot.message_to_myself(message, context[:state]) == false
     end
 
     test "it is a message assigned to other", context do
       message = %{text: "Hi <@UOTHERUSERID> . How are you."}
-      assert HomeMiku.Slack.Bot.message_to_myself(message, context[:state]) == false
+      assert SlackBot.Slack.Bot.message_to_myself(message, context[:state]) == false
     end
 
     test "it is a message assigned to me", context do
       message = %{text: "Hi <@#{context[:user_id]}> . How are you."}
-      assert HomeMiku.Slack.Bot.message_to_myself(message, context[:state]) == true
+      assert SlackBot.Slack.Bot.message_to_myself(message, context[:state]) == true
     end
   end
 end

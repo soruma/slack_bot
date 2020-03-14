@@ -1,9 +1,9 @@
-defmodule HomeMiku.MixProject do
+defmodule SlackBot.MixProject do
   use Mix.Project
 
   def project do
     [
-      app: :home_miku,
+      app: :slack_bot,
       version: "0.1.0",
       elixir: "~> 1.10",
       start_permanent: Mix.env() == :prod,
@@ -16,7 +16,7 @@ defmodule HomeMiku.MixProject do
   def application do
     [
       extra_applications: [:gettext, :logger],
-      mod: {HomeMiku.Application, []}
+      mod: {SlackBot.Application, []}
     ]
   end
 

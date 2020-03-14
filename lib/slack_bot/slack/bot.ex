@@ -1,7 +1,7 @@
-defmodule HomeMiku.Slack.Bot do
+defmodule SlackBot.Slack.Bot do
   @moduledoc false
 
-  import HomeMiku.Gettext
+  import SlackBot.Gettext
 
   @spec react_to_message(tuple, Slack.State.t) :: tuple
   def react_to_message(%{subtype: "message_changed"}, _), do: {:skip}

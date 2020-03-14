@@ -1,4 +1,4 @@
-defmodule HomeMiku.Slack.Rtm do
+defmodule SlackBot.Slack.Rtm do
   @moduledoc false
 
   use Slack
@@ -9,7 +9,7 @@ defmodule HomeMiku.Slack.Rtm do
   end
 
   def handle_event(message = %{type: "message"}, slack, state) do
-    case HomeMiku.Slack.Bot.react_to_message(message, slack) do
+    case SlackBot.Slack.Bot.react_to_message(message, slack) do
       {:send_message, result} -> send_message(result, message.channel, slack)
       _ -> :skip
     end

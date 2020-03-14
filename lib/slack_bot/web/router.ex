@@ -1,4 +1,4 @@
-defmodule HomeMiku.Web.Router do
+defmodule SlackBot.Web.Router do
   use Plug.Router
 
   plug Plug.Parsers, parsers: [:urlencoded, :multipart]
