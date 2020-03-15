@@ -9,7 +9,7 @@ defmodule SlackBot.Slack.Bot do
   def react_to_message(%{subtype: "channel_join"}, _), do: {:skip}
 
   def react_to_message(%{attachments: attachments}, _), do: interpret_attachment(attachments)
-  def react_to_message(message, slack), do: interpret_message(message, slack)
+  def react_to_message(message, slack), do: interpret_message(message, slack.me.id)
 
   @spec interpret_attachment(list(tuple)) :: tuple
   def interpret_attachment([]), do: {:skip}
@@ -23,17 +23,17 @@ defmodule SlackBot.Slack.Bot do
     end
   end
 
-  @spec interpret_message(tuple, Slack.State.t) :: tuple
-  def interpret_message(message, slack) do
-    if message_to_myself(message, slack) do
+  @spec interpret_message(tuple, String.t) :: tuple
+  def interpret_message(message, bot_id) do
+    if message_to_myself(message, bot_id) do
       {:send_message, gettext("I got a message!")}
     else
       {:skip}
     end
   end
 
-  @spec message_to_myself(%{text: String.t}, Slack.State.t) :: boolean
-  def message_to_myself(message, slack) do
-    String.match?(message.text, ~r/<@#{slack.me.id}>/)
+  @spec message_to_myself(%{text: String.t}, String.t) :: boolean
+  def message_to_myself(message, bot_id) do
+    String.match?(message.text, ~r/<@#{bot_id}>/)
   end
 end

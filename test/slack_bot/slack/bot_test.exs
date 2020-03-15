@@ -56,31 +56,31 @@ defmodule SlackBot.Slack.BotTest do
   end
 
   describe "interpret_message/2" do
-    test "respond to messages addressed to other", context do
+    test "respond to messages addressed to other", %{user_id: user_id} = _context do
       message = %{text: "Hi <@UOTHERUSERID> . How are you."}
-      assert {:skip} = SlackBot.Slack.Bot.interpret_message(message, context[:state])
+      assert {:skip} = SlackBot.Slack.Bot.interpret_message(message, user_id)
     end
 
-    test "respond to messages addressed to me", context do
-      message = %{text: "Hi <@#{context[:user_id]}> . How are you."}
-      assert {:send_message, _} = SlackBot.Slack.Bot.interpret_message(message, context[:state])
+    test "respond to messages addressed to me", %{user_id: user_id} = _context do
+      message = %{text: "Hi <@#{user_id}> . How are you."}
+      assert {:send_message, _} = SlackBot.Slack.Bot.interpret_message(message, user_id)
     end
   end
 
   describe "message_to_myself/2" do
-    test "it is a message not assigned to anyone", context do
+    test "it is a message not assigned to anyone", %{user_id: user_id} = _context do
       message = %{text: "Hi"}
-      assert SlackBot.Slack.Bot.message_to_myself(message, context[:state]) == false
+      assert SlackBot.Slack.Bot.message_to_myself(message, user_id) == false
     end
 
-    test "it is a message assigned to other", context do
+    test "it is a message assigned to other", %{user_id: user_id} = _context do
       message = %{text: "Hi <@UOTHERUSERID> . How are you."}
-      assert SlackBot.Slack.Bot.message_to_myself(message, context[:state]) == false
+      assert SlackBot.Slack.Bot.message_to_myself(message, user_id) == false
     end
 
-    test "it is a message assigned to me", context do
-      message = %{text: "Hi <@#{context[:user_id]}> . How are you."}
-      assert SlackBot.Slack.Bot.message_to_myself(message, context[:state]) == true
+    test "it is a message assigned to me", %{user_id: user_id} = _context do
+      message = %{text: "Hi <@#{user_id}> . How are you."}
+      assert SlackBot.Slack.Bot.message_to_myself(message, user_id) == true
     end
   end
 end
