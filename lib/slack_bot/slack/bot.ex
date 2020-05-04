@@ -26,7 +26,11 @@ defmodule SlackBot.Slack.Bot do
   @spec interpret_message(tuple, String.t) :: tuple
   def interpret_message(message, bot_id) do
     if message_to_myself(message, bot_id) do
-      {:send_message, gettext("I got a message!")}
+      case SlackBot.MessageBrain.Switcher.switch(message.text).execute(message.text) do
+        {:ok, message} -> {:send_message, message}
+        {:error, error_messages} -> {:send_message, hd error_messages}
+        {:skip} -> {:skip}
+      end
     else
       {:skip}
     end

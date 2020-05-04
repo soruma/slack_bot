@@ -38,8 +38,7 @@ defmodule SlackBot.Slack.BotTest do
     test "return send_message if message is other tuple", context do
       message = %{text: "Hi <@#{context[:user_id]}> ."}
 
-      assert {:send_message, "I got a message!"} =
-        SlackBot.Slack.Bot.react_to_message(message, context[:state])
+      assert {:skip} = SlackBot.Slack.Bot.react_to_message(message, context[:state])
     end
   end
 
@@ -63,7 +62,7 @@ defmodule SlackBot.Slack.BotTest do
 
     test "respond to messages addressed to me", %{user_id: user_id} = _context do
       message = %{text: "Hi <@#{user_id}> . How are you."}
-      assert {:send_message, _} = SlackBot.Slack.Bot.interpret_message(message, user_id)
+      assert {:skip} = SlackBot.Slack.Bot.interpret_message(message, user_id)
     end
   end
 

@@ -11,11 +11,16 @@ msgid ""
 msgstr ""
 
 #, elixir-format
-#: lib/slack_bot/slack/bot.ex:27
+#: lib/slack_bot/slack/bot.ex:20
+msgid "Welcome back, master :heart:"
+msgstr ""
+
+#, elixir-format
+#: lib/slack_bot/slack/bot.ex:29
 msgid "I got a message!"
 msgstr ""
 
 #, elixir-format
-#: lib/slack_bot/slack/bot.ex:18
-msgid "Welcome back, master :heart:"
+#: lib/slack_bot/message_brain_switcher.ex:47
+msgid "The message was registered successfully :blush:"
 msgstr ""
