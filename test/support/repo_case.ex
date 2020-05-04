@@ -14,10 +14,12 @@ defmodule SlackBot.RepoCase do
   end
 
   setup tags do
-    :ok = Ecto.Adapters.SQL.Sandbox.checkout(SlackBot.Repo)
+    alias Ecto.Adapters.SQL.Sandbox
+
+    :ok = Sandbox.checkout(SlackBot.Repo)
 
     unless tags[:async] do
-      Ecto.Adapters.SQL.Sandbox.mode(SlackBot.Repo, {:shared, self()})
+      Sandbox.mode(SlackBot.Repo, {:shared, self()})
     end
 
     :ok

@@ -30,6 +30,8 @@ defmodule SlackBot.MessageBrain.AddMessage do
 
   import SlackBot.Gettext
 
+  alias SlackBot.Schema.Phrase
+
   @spec identifier :: String.t
   def identifier, do: "add message"
 
@@ -45,8 +47,8 @@ defmodule SlackBot.MessageBrain.AddMessage do
 
   @spec fetch(String.t) :: tuple
   def execute(phrase) do
-    changeset = %SlackBot.Schema.Phrase{}
-                |> SlackBot.Schema.Phrase.changeset(%{phrase: fetch(phrase)})
+    changeset = %Phrase{}
+                |> Phrase.changeset(%{phrase: fetch(phrase)})
 
     case SlackBot.Repo.insert(changeset) do
       {:ok, _} -> {:ok, gettext("The message was registered successfully :blush:")}

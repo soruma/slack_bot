@@ -3,13 +3,15 @@ defmodule SlackBot.Slack.Rtm do
 
   use Slack
 
+  alias SlackBot.Slack.Bot
+
   def handle_connect(slack, state) do
     IO.puts "Connected as #{slack.me.name}"
     {:ok, state}
   end
 
   def handle_event(message = %{type: "message"}, slack, state) do
-    case SlackBot.Slack.Bot.react_to_message(message, slack) do
+    case Bot.react_to_message(message, slack) do
       {:send_message, result} -> send_message(result, message.channel, slack)
       _ -> :skip
     end

@@ -3,6 +3,8 @@ defmodule SlackBot.Slack.Bot do
 
   import SlackBot.Gettext
 
+  alias SlackBot.MessageBrain.Switcher
+
   @spec react_to_message(tuple, Slack.State.t) :: tuple
   def react_to_message(%{subtype: "message_changed"}, _), do: {:skip}
   def react_to_message(%{subtype: "message_deleted"}, _), do: {:skip}
@@ -26,7 +28,7 @@ defmodule SlackBot.Slack.Bot do
   @spec interpret_message(tuple, String.t) :: tuple
   def interpret_message(message, bot_id) do
     if message_to_myself(message, bot_id) do
-      case SlackBot.MessageBrain.Switcher.switch(message.text).execute(message.text) do
+      case Switcher.switch(message.text).execute(message.text) do
         {:ok, message} -> {:send_message, message}
         {:error, error_messages} -> {:send_message, hd error_messages}
         {:skip} -> {:skip}
