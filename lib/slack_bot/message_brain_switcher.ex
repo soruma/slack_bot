@@ -45,7 +45,7 @@ defmodule SlackBot.MessageBrain.AddMessage do
     |> List.last
   end
 
-  @spec fetch(String.t) :: tuple
+  @spec execute(String.t) :: tuple
   def execute(phrase) do
     changeset = %Phrase{}
                 |> Phrase.changeset(%{phrase: fetch(phrase)})
