@@ -3,7 +3,7 @@ defmodule SlackBot.MessageBrain.Switcher do
 
   @spec switch(String.t) :: module
   def switch(message) do
-    [SlackBot.MessageBrain.AddMessage]
+    [SlackBot.MessageBrain.AddMessage, SlackBot.MessageBrain.DeleteMessage]
     |> Enum.find(SlackBot.MessageBrain.Nil,
                  fn(module) -> if(module.decide(message), do: module) end)
   end
@@ -53,6 +53,41 @@ defmodule SlackBot.MessageBrain.AddMessage do
     case SlackBot.Repo.insert(changeset) do
       {:ok, _} -> {:ok, gettext("The message was registered successfully :blush:")}
       {:error, %{errors: errors}} -> {:error, SlackBot.EctoHelper.pretty_errors(errors)}
+    end
+  end
+end
+
+defmodule  SlackBot.MessageBrain.DeleteMessage do
+  @moduledoc false
+
+  import Ecto.Query
+  import SlackBot.Gettext
+
+  alias SlackBot.Schema.Phrase
+
+  @spec identifier :: String.t
+  def identifier, do: "delete message"
+
+  @spec decide(String.t) :: boolean
+  def decide(message), do: message =~ identifier()
+
+  @spec fetch(String.t) :: String.t
+  def fetch(message) do
+    Regex.scan(~r/#{identifier()} (.{1,})/, message)
+    |> List.flatten
+    |> List.last
+  end
+
+  @spec execute(String.t) :: tuple
+  def execute(phrase) do
+    phrase = fetch(phrase)
+    query = Phrase |> where([p], p.phrase == ^phrase)
+
+    phrases = SlackBot.Repo.all(query)
+    case length phrases do
+      0 -> {:error, gettext("%{phrase} is not found :sweat_smile:", phrase: phrase)}
+      _ -> for phrase <- phrases, do: SlackBot.Repo.delete(phrase)
+           {:ok, gettext("%{phrase} was deleted successfully :+1:", phrase: phrase)}
     end
   end
 end

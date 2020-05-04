@@ -10,6 +10,11 @@ defmodule SlackBot.MessageBrain.SwitcherTest do
       assert SlackBot.MessageBrain.AddMessage = Switcher.switch(message)
     end
 
+    test "return DeleteMessage if the message contains 'delete message'" do
+      message = "delete message"
+      assert SlackBot.MessageBrain.DeleteMessage = Switcher.switch(message)
+    end
+
     test "return Nil if not match any conditions" do
       message = "Hi"
       assert SlackBot.MessageBrain.Nil = Switcher.switch(message)
@@ -103,6 +108,40 @@ defmodule SlackBot.MessageBrain.AddMessageTest do
 
       query = Phrase |> select([p], count(p.id))
       assert [0] = Repo.all(query)
+    end
+  end
+end
+
+defmodule SlackBot.MessageBrain.DeleteMessageTest do
+  use ExUnit.Case
+  use SlackBot.RepoCase
+  doctest SlackBot.MessageBrain.DeleteMessage
+
+  alias SlackBot.MessageBrain.DeleteMessage
+  alias SlackBot.Schema.Phrase
+
+  describe "identifier/0" do
+    test "it is 'delete message'" do
+      assert "delete message" = DeleteMessage.identifier
+    end
+  end
+
+  describe "execute/1" do
+    test "delete record Phrase if matches phrase" do
+      SlackBot.Repo.insert %Phrase{phrase: "target message"}
+
+      {:ok, send_message} = DeleteMessage.execute("Hi bot delete message target message")
+      assert "target message was deleted successfully :+1:" = send_message
+
+      query = Phrase
+              |> where([p], p.phrase == "target message")
+              |> select([p], count(p.id))
+      assert [0] = Repo.all(query)
+    end
+
+    test "return an error message if not found phrase" do
+      {:error, send_message} = DeleteMessage.execute("Hi bot delete message target message")
+      assert "target message is not found :sweat_smile:" = send_message
     end
   end
 end

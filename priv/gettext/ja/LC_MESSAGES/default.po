@@ -12,3 +12,13 @@ msgstr "お帰りなさいませ、ご主人様 :heart:"
 #: lib/slack_bot/message_brain_switcher.ex:54
 msgid "The message was registered successfully :blush:"
 msgstr "メッセージの登録に成功しました :blush:"
+
+#, elixir-format, fuzzy
+#: lib/slack_bot/message_brain_switcher.ex:87
+msgid "%{phrase} is not found :sweat_smile:"
+msgstr "%{phrase}が存在しません :sweat_smile:"
+
+#, elixir-format, fuzzy
+#: lib/slack_bot/message_brain_switcher.ex:89
+msgid "%{phrase} was deleted successfully :+1:"
+msgstr "%{phrase}の削除に成功しました :+1:"

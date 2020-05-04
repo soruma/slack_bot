@@ -19,3 +19,13 @@ msgstr ""
 #: lib/slack_bot/message_brain_switcher.ex:54
 msgid "The message was registered successfully :blush:"
 msgstr ""
+
+#, elixir-format
+#: lib/slack_bot/message_brain_switcher.ex:87
+msgid "%{phrase} is not found :sweat_smile:"
+msgstr ""
+
+#, elixir-format
+#: lib/slack_bot/message_brain_switcher.ex:89
+msgid "%{phrase} was deleted successfully :+1:"
+msgstr ""
