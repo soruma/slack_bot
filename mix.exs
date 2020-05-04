@@ -23,13 +23,13 @@ defmodule SlackBot.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:credo, "~> 1.2", only: [:dev, :test], runtime: false},
-      {:ecto_sql, "~> 3.3"},
+      {:credo, "~> 1.4", only: [:dev, :test], runtime: false},
+      {:ecto_sql, "~> 3.4"},
       {:gettext, "~> 0.17"},
-      {:plug_cowboy, "~> 2.1"},
+      {:plug_cowboy, "~> 2.2"},
       {:poison, "~> 4.0"},
       {:postgrex, "~> 0.15"},
-      {:slack, "~> 0.19"}
+      {:slack, "~> 0.23"}
     ]
   end
 end
