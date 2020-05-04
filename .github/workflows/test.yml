@@ -17,6 +17,15 @@ jobs:
 
     needs: prepare
 
+    services:
+      db:
+        image: postgres:12
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+        ports:
+          - 5432:5432
+
     steps:
     - uses: actions/checkout@v2
 
