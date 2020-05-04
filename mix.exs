@@ -8,7 +8,9 @@ defmodule SlackBot.MixProject do
       elixir: "~> 1.10",
       start_permanent: Mix.env() == :prod,
       compilers: [:gettext] ++ Mix.compilers,
-      deps: deps()
+      deps: deps(),
+      elixirc_paths: elixirc_paths(Mix.env()),
+      aliases: aliases()
     ]
   end
 
@@ -30,6 +32,16 @@ defmodule SlackBot.MixProject do
       {:poison, "~> 4.0"},
       {:postgrex, "~> 0.15"},
       {:slack, "~> 0.23"}
+    ]
+  end
+
+  # Specifies which paths to compile per environment.
+  defp elixirc_paths(:test), do: ["lib", "test/support"]
+  defp elixirc_paths(_), do: ["lib"]
+
+  defp aliases do
+    [
+      test: ["ecto.create --quiet", "ecto.migrate", "test"]
     ]
   end
 end
