@@ -13,17 +13,30 @@ defmodule SlackBot.MessageBrain.Switcher do
   end
 end
 
+defmodule SlackBot.MessageBrain do
+  @moduledoc false
+
+  defmacro __using__(opts) do
+    identifier = Keyword.get(opts, :identifier, "")
+
+    quote do
+      @spec decide(String.t) :: boolean
+      def decide(message), do: message =~ unquote(identifier)
+
+      @spec fetch(String.t) :: String.t
+      def fetch(message) do
+        Regex.scan(~r/#{unquote(identifier)} (.{1,})/, message)
+        |> List.flatten
+        |> List.last
+      end
+    end
+  end
+end
+
 defmodule SlackBot.MessageBrain.Nil do
   @moduledoc false
 
-  @spec identifier :: nil
-  def identifier, do: nil
-
-  @spec decide(String.t) :: boolean
-  def decide(_message), do: true
-
-  @spec fetch(String.t) :: String.t
-  def fetch(message), do: message
+  use SlackBot.MessageBrain
 
   @spec execute(String.t) :: tuple
   def execute(_message), do: {:skip}
@@ -32,22 +45,10 @@ end
 defmodule SlackBot.MessageBrain.AddMessage do
   @moduledoc false
 
+  use SlackBot.MessageBrain, identifier: "add message"
   import SlackBot.Gettext
 
   alias SlackBot.Schema.Phrase
-
-  @spec identifier :: String.t
-  def identifier, do: "add message"
-
-  @spec decide(String.t) :: boolean
-  def decide(message), do: message =~ identifier()
-
-  @spec fetch(String.t) :: String.t
-  def fetch(message) do
-    Regex.scan(~r/#{identifier()} (.{1,})/, message)
-    |> List.flatten
-    |> List.last
-  end
 
   @spec execute(String.t) :: tuple
   def execute(phrase) do
@@ -64,23 +65,11 @@ end
 defmodule  SlackBot.MessageBrain.DeleteMessage do
   @moduledoc false
 
+  use SlackBot.MessageBrain, identifier: "delete message"
   import Ecto.Query
   import SlackBot.Gettext
 
   alias SlackBot.Schema.Phrase
-
-  @spec identifier :: String.t
-  def identifier, do: "delete message"
-
-  @spec decide(String.t) :: boolean
-  def decide(message), do: message =~ identifier()
-
-  @spec fetch(String.t) :: String.t
-  def fetch(message) do
-    Regex.scan(~r/#{identifier()} (.{1,})/, message)
-    |> List.flatten
-    |> List.last
-  end
 
   @spec execute(String.t) :: tuple
   def execute(phrase) do
@@ -99,23 +88,11 @@ end
 defmodule  SlackBot.MessageBrain.MessageList do
   @moduledoc false
 
+  use SlackBot.MessageBrain, identifier: "message list"
   import Ecto.Query
   import SlackBot.Gettext
 
   alias SlackBot.Schema.Phrase
-
-  @spec identifier :: String.t
-  def identifier, do: "message list"
-
-  @spec decide(String.t) :: boolean
-  def decide(message), do: message =~ identifier()
-
-  @spec fetch(String.t) :: String.t
-  def fetch(message) do
-    Regex.scan(~r/#{identifier()} (.{1,})/, message)
-    |> List.flatten
-    |> List.last
-  end
 
   @spec execute(String.t) :: tuple
   def execute(_phrase) do

@@ -27,29 +27,41 @@ defmodule SlackBot.MessageBrain.SwitcherTest do
   end
 end
 
+defmodule SlackBot.MessageBrainTest do
+  use ExUnit.Case
+  use SlackBot.MessageBrain, identifier: "add message"
+  doctest SlackBot.MessageBrain
+
+  describe "decide/1" do
+    test "return true when 'add message' is include" do
+      message = "Hi bot add message test message"
+      assert true = decide(message)
+    end
+
+    test "return false without 'add message' is include" do
+      message = "Hi bot"
+      assert match?(false, decide(message))
+    end
+  end
+
+  describe "fetch/1" do
+    test "return extract string after identifier if the message contains identifier" do
+      message = "Hi bot add message test message"
+      assert "test message" = fetch(message)
+    end
+
+    test "return nil if the message does not include an identifier" do
+      message = "Hi bot"
+      assert match?(nil, fetch(message))
+    end
+  end
+end
+
 defmodule SlackBot.MessageBrain.NilTest do
   use ExUnit.Case
   doctest SlackBot.MessageBrain.Nil
 
   alias SlackBot.MessageBrain.Nil
-
-  describe "identifier/0" do
-    test "return nil" do
-      assert match?(nil, Nil.identifier)
-    end
-  end
-
-  describe "decide/1" do
-    test "always decide" do
-      assert true = Nil.decide("this is a message")
-    end
-  end
-
-  describe "fetch/1" do
-    test "return the message as is" do
-      assert "this is a message" = Nil.fetch("this is a message")
-    end
-  end
 
   describe "execute/1" do
     test "return :skip" do
@@ -65,36 +77,6 @@ defmodule SlackBot.MessageBrain.AddMessageTest do
 
   alias SlackBot.MessageBrain.AddMessage
   alias SlackBot.Schema.Phrase
-
-  describe "identifier/0" do
-    test "it is 'add message'" do
-      assert "add message" = AddMessage.identifier
-    end
-  end
-
-  describe "decide/1" do
-    test "return true when 'add message' is include" do
-      message = "Hi bot add message test message"
-      assert true = AddMessage.decide(message)
-    end
-
-    test "return false without 'add message' is include" do
-      message = "Hi bot"
-      assert match?(false, AddMessage.decide(message))
-    end
-  end
-
-  describe "fetch/1" do
-    test "return extract string after identifier if the message contains identifier" do
-      message = "Hi bot add message test message"
-      assert "test message" = AddMessage.fetch(message)
-    end
-
-    test "return nil if the message does not include an identifier" do
-      message = "Hi bot"
-      assert match?(nil, AddMessage.fetch(message))
-    end
-  end
 
   describe "execute/1" do
     test "add a record to Phrase if valid param" do
@@ -120,12 +102,6 @@ defmodule SlackBot.MessageBrain.DeleteMessageTest do
 
   alias SlackBot.MessageBrain.DeleteMessage
   alias SlackBot.Schema.Phrase
-
-  describe "identifier/0" do
-    test "it is 'delete message'" do
-      assert "delete message" = DeleteMessage.identifier
-    end
-  end
 
   describe "execute/1" do
     test "delete record Phrase if matches phrase" do
@@ -154,12 +130,6 @@ defmodule SlackBot.MessageBrain.MessageListTest do
 
   alias SlackBot.MessageBrain.MessageList
   alias SlackBot.Schema.Phrase
-
-  describe "identifier/0" do
-    test "it is 'message list'" do
-      assert "message list" = MessageList.identifier
-    end
-  end
 
   describe "execute/1" do
     test "return phrase list" do
