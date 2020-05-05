@@ -15,6 +15,11 @@ defmodule SlackBot.MessageBrain.SwitcherTest do
       assert SlackBot.MessageBrain.DeleteMessage = Switcher.switch(message)
     end
 
+    test "return MessageList if the message contains 'message list'" do
+      message = "message list"
+      assert SlackBot.MessageBrain.MessageList = Switcher.switch(message)
+    end
+
     test "return Nil if not match any conditions" do
       message = "Hi"
       assert SlackBot.MessageBrain.Nil = Switcher.switch(message)
@@ -96,18 +101,14 @@ defmodule SlackBot.MessageBrain.AddMessageTest do
       {:ok, send_message} = AddMessage.execute("Hi bot add message test message")
       assert "The message was registered successfully :blush:" = send_message
 
-      query = Phrase
-              |> where([p], p.phrase == "test message")
-              |> select([p], count(p.id))
-      assert [1] = Repo.all(query)
+      assert 1 = length Repo.all(Phrase |> where([p], p.phrase == "test message"))
     end
 
     test "record not add if invalid param" do
       {:error, send_message} = AddMessage.execute("Hi bot")
       assert ["Phrase can't be blank"] = send_message
 
-      query = Phrase |> select([p], count(p.id))
-      assert [0] = Repo.all(query)
+      assert 0 = length Repo.all(Phrase)
     end
   end
 end
@@ -142,6 +143,33 @@ defmodule SlackBot.MessageBrain.DeleteMessageTest do
     test "return an error message if not found phrase" do
       {:error, send_message} = DeleteMessage.execute("Hi bot delete message target message")
       assert "target message is not found :sweat_smile:" = send_message
+    end
+  end
+end
+
+defmodule SlackBot.MessageBrain.MessageListTest do
+  use ExUnit.Case
+  use SlackBot.RepoCase
+  doctest SlackBot.MessageBrain.MessageList
+
+  alias SlackBot.MessageBrain.MessageList
+  alias SlackBot.Schema.Phrase
+
+  describe "identifier/0" do
+    test "it is 'message list'" do
+      assert "message list" = MessageList.identifier
+    end
+  end
+
+  describe "execute/1" do
+    test "return phrase list" do
+      SlackBot.Repo.insert_all Phrase, [%{phrase: "test message"}, %{phrase: "message"}]
+
+      assert {:ok, ["test message", "message"]} = MessageList.execute("message list")
+    end
+
+    test "return error message if phrase is not registered" do
+      assert {:ok, "not found phrase"} = MessageList.execute("message list")
     end
   end
 end

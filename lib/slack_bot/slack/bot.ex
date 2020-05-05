@@ -29,8 +29,13 @@ defmodule SlackBot.Slack.Bot do
   def interpret_message(message, bot_id) do
     if message_to_myself(message, bot_id) do
       case Switcher.switch(message.text).execute(message.text) do
-        {:ok, message} -> {:send_message, message}
-        {:error, error_messages} -> {:send_message, hd error_messages}
+        {:ok, messages} ->
+          if is_list(messages) do
+            {:send_message, messages |> Enum.join("\n")}
+          else
+            {:send_message, messages}
+          end
+        {:error, error_messages} -> {:send_message, error_messages |> Enum.join("\n")}
         {:skip} -> {:skip}
       end
     else

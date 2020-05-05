@@ -1,5 +1,6 @@
 defmodule SlackBot.Slack.BotTest do
   use ExUnit.Case
+  use SlackBot.RepoCase
   doctest SlackBot.Slack.Bot
 
   alias SlackBot.Slack.Bot
@@ -58,13 +59,13 @@ defmodule SlackBot.Slack.BotTest do
 
   describe "interpret_message/2" do
     test "respond to messages addressed to other", %{user_id: user_id} = _context do
-      message = %{text: "Hi <@UOTHERUSERID> . How are you."}
+      message = %{text: "Hi <@UOTHERUSERID> . message list"}
       assert {:skip} = Bot.interpret_message(message, user_id)
     end
 
     test "respond to messages addressed to me", %{user_id: user_id} = _context do
-      message = %{text: "Hi <@#{user_id}> . How are you."}
-      assert {:skip} = Bot.interpret_message(message, user_id)
+      message = %{text: "Hi <@#{user_id}> . message list"}
+      assert {:send_message, "not found phrase"} = Bot.interpret_message(message, user_id)
     end
   end
 
