@@ -9,16 +9,21 @@ msgid "Welcome back, master :heart:"
 msgstr "お帰りなさいませ、ご主人様 :heart:"
 
 #, elixir-format
-#: lib/slack_bot/message_brain_switcher.ex:54
+#: lib/slack_bot/message_brain_switcher.ex:58
 msgid "The message was registered successfully :blush:"
 msgstr "メッセージの登録に成功しました :blush:"
 
-#, elixir-format, fuzzy
-#: lib/slack_bot/message_brain_switcher.ex:87
+#, elixir-format
+#: lib/slack_bot/message_brain_switcher.ex:92
 msgid "%{phrase} is not found :sweat_smile:"
 msgstr "%{phrase}が存在しません :sweat_smile:"
 
-#, elixir-format, fuzzy
-#: lib/slack_bot/message_brain_switcher.ex:89
+#, elixir-format
+#: lib/slack_bot/message_brain_switcher.ex:94
 msgid "%{phrase} was deleted successfully :+1:"
 msgstr "%{phrase}の削除に成功しました :+1:"
+
+#, elixir-format
+#: lib/slack_bot/message_brain_switcher.ex:127
+msgid "not found phrase"
+msgstr "フレーズが存在しません"

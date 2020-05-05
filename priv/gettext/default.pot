@@ -16,16 +16,21 @@ msgid "Welcome back, master :heart:"
 msgstr ""
 
 #, elixir-format
-#: lib/slack_bot/message_brain_switcher.ex:54
+#: lib/slack_bot/message_brain_switcher.ex:58
 msgid "The message was registered successfully :blush:"
 msgstr ""
 
 #, elixir-format
-#: lib/slack_bot/message_brain_switcher.ex:87
+#: lib/slack_bot/message_brain_switcher.ex:92
 msgid "%{phrase} is not found :sweat_smile:"
 msgstr ""
 
 #, elixir-format
-#: lib/slack_bot/message_brain_switcher.ex:89
+#: lib/slack_bot/message_brain_switcher.ex:94
 msgid "%{phrase} was deleted successfully :+1:"
+msgstr ""
+
+#, elixir-format
+#: lib/slack_bot/message_brain_switcher.ex:127
+msgid "not found phrase"
 msgstr ""
