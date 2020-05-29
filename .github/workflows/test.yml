@@ -3,19 +3,10 @@ name: Test
 on: push
 
 jobs:
-
-  prepare:
-    runs-on: ubuntu-latest
-
-    if: "! contains(github.event.head_commit.message, '[ci skip]')"
-
-    steps:
-      - run: echo "${{ github.event.head_commit.message }}"
-
   build:
     runs-on: ubuntu-latest
 
-    needs: prepare
+    if: "! contains(github.event.head_commit.message, '[ci skip]')"
 
     services:
       db:
