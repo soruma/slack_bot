@@ -9,3 +9,6 @@ config :slack_bot, SlackBot.Repo,
   username: System.get_env("DATABASE_USERNAME"),
   password: System.get_env("DATABASE_PASSWORD"),
   hostname: System.get_env("DATABASE_HOSTNAME")
+
+config :slack_bot,
+  api_token: System.get_env("SLACK_BOT_API_TOKEN")
