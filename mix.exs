@@ -27,6 +27,7 @@ defmodule SlackBot.MixProject do
     [
       {:credo, "~> 1.4", only: [:dev, :test], runtime: false},
       {:ecto_sql, "~> 3.4"},
+      {:ex_doc, "~> 0.22", only: :dev, runtime: false},
       {:gettext, "~> 0.17"},
       {:plug_cowboy, "~> 2.2"},
       {:poison, "~> 4.0"},
