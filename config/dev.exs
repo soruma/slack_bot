@@ -12,3 +12,6 @@ config :slack_bot, SlackBot.Repo,
 
 config :slack_bot,
   api_token: System.get_env("SLACK_BOT_API_TOKEN")
+
+config :open_weather,
+  api_key: System.get_env("OPENWEATHER_APP_KEY")

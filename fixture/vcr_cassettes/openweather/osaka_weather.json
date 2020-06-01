@@ -1,0 +1,29 @@
+[
+  {
+    "request": {
+      "body": "",
+      "headers": [],
+      "method": "get",
+      "options": [],
+      "request_body": "",
+      "url": "http://api.openweathermap.org/data/2.5/weather?q=Osaka&appid=a406a1f8636ba935cfdad2b686cad61e"
+    },
+    "response": {
+      "binary": false,
+      "body": "{\"coord\":{\"lon\":135.5,\"lat\":34.69},\"weather\":[{\"id\":500,\"main\":\"Rain\",\"description\":\"light rain\",\"icon\":\"10n\"}],\"base\":\"stations\",\"main\":{\"temp\":293.18,\"feels_like\":293.24,\"temp_min\":289.26,\"temp_max\":295.37,\"pressure\":1009,\"humidity\":85},\"wind\":{\"speed\":3.57,\"deg\":219},\"rain\":{\"1h\":0.2},\"clouds\":{\"all\":48},\"dt\":1591023913,\"sys\":{\"type\":3,\"id\":2019595,\"country\":\"JP\",\"sunrise\":1591040758,\"sunset\":1591092381},\"timezone\":32400,\"id\":1853909,\"name\":\"Osaka\",\"cod\":200}",
+      "headers": {
+        "Server": "openresty",
+        "Date": "Mon, 01 Jun 2020 15:13:30 GMT",
+        "Content-Type": "application/json; charset=utf-8",
+        "Content-Length": "466",
+        "Connection": "keep-alive",
+        "X-Cache-Key": "/data/2.5/weather?q=osaka",
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Credentials": "true",
+        "Access-Control-Allow-Methods": "GET, POST"
+      },
+      "status_code": 200,
+      "type": "ok"
+    }
+  }
+]

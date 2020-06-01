@@ -1,0 +1,29 @@
+[
+  {
+    "request": {
+      "body": "",
+      "headers": [],
+      "method": "get",
+      "options": [],
+      "request_body": "",
+      "url": "http://api.openweathermap.org/data/2.5/weather?q=Osaka&appid="
+    },
+    "response": {
+      "binary": false,
+      "body": "{\"cod\":401, \"message\": \"Invalid API key. Please see http://openweathermap.org/faq#error401 for more info.\"}",
+      "headers": {
+        "Server": "openresty",
+        "Date": "Mon, 01 Jun 2020 15:48:37 GMT",
+        "Content-Type": "application/json; charset=utf-8",
+        "Content-Length": "107",
+        "Connection": "keep-alive",
+        "X-Cache-Key": "/data/2.5/weather?q=osaka",
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Credentials": "true",
+        "Access-Control-Allow-Methods": "GET, POST"
+      },
+      "status_code": 401,
+      "type": "ok"
+    }
+  }
+]

@@ -1,0 +1,29 @@
+[
+  {
+    "request": {
+      "body": "",
+      "headers": [],
+      "method": "get",
+      "options": [],
+      "request_body": "",
+      "url": "http://api.openweathermap.org/data/2.5/weather?q=NotExistCity&appid=a406a1f8636ba935cfdad2b686cad61e"
+    },
+    "response": {
+      "binary": false,
+      "body": "{\"cod\":\"404\",\"message\":\"city not found\"}",
+      "headers": {
+        "Server": "openresty",
+        "Date": "Mon, 01 Jun 2020 15:13:32 GMT",
+        "Content-Type": "application/json; charset=utf-8",
+        "Content-Length": "40",
+        "Connection": "keep-alive",
+        "X-Cache-Key": "/data/2.5/weather?q=notexistcity",
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Credentials": "true",
+        "Access-Control-Allow-Methods": "GET, POST"
+      },
+      "status_code": 404,
+      "type": "ok"
+    }
+  }
+]
