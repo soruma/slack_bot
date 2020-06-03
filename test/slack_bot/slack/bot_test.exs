@@ -10,8 +10,7 @@ defmodule SlackBot.Slack.BotTest do
 
     {
       :ok,
-      user_id: user_id,
-      state: %Slack.State{me: %{id: user_id}},
+      user_id: user_id, state: %Slack.State{me: %{id: user_id}}
     }
   end
 
@@ -35,7 +34,7 @@ defmodule SlackBot.Slack.BotTest do
       attachments = %{attachments: [%{title: "Approached at home"}]}
 
       assert {:send_message, "Welcome back, master :heart:"} =
-        Bot.react_to_message(attachments, context[:state])
+               Bot.react_to_message(attachments, context[:state])
     end
 
     test "return send_message if message is other tuple", context do

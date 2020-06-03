@@ -1,15 +1,17 @@
 defmodule SlackBot.MessageBrain.Switcher do
   @moduledoc false
 
-  @spec switch(String.t) :: module
+  @spec switch(String.t()) :: module
   def switch(message) do
     [
       SlackBot.MessageBrain.AddMessage,
       SlackBot.MessageBrain.DeleteMessage,
       SlackBot.MessageBrain.MessageList
     ]
-    |> Enum.find(SlackBot.MessageBrain.Nil,
-                 fn(module) -> if(module.decide(message), do: module) end)
+    |> Enum.find(
+      SlackBot.MessageBrain.Nil,
+      fn module -> if(module.decide(message), do: module) end
+    )
   end
 end
 
@@ -20,14 +22,14 @@ defmodule SlackBot.MessageBrain do
     identifier = Keyword.get(opts, :identifier, "")
 
     quote do
-      @spec decide(String.t) :: boolean
+      @spec decide(String.t()) :: boolean
       def decide(message), do: message =~ unquote(identifier)
 
-      @spec fetch(String.t) :: String.t
+      @spec fetch(String.t()) :: String.t()
       def fetch(message) do
         Regex.scan(~r/#{unquote(identifier)} (.{1,})/, message)
-        |> List.flatten
-        |> List.last
+        |> List.flatten()
+        |> List.last()
       end
     end
   end
@@ -38,7 +40,7 @@ defmodule SlackBot.MessageBrain.Nil do
 
   use SlackBot.MessageBrain
 
-  @spec execute(String.t) :: tuple
+  @spec execute(String.t()) :: tuple
   def execute(_message), do: {:skip}
 end
 
@@ -50,10 +52,11 @@ defmodule SlackBot.MessageBrain.AddMessage do
 
   alias SlackBot.Schema.Phrase
 
-  @spec execute(String.t) :: tuple
+  @spec execute(String.t()) :: tuple
   def execute(phrase) do
-    changeset = %Phrase{}
-                |> Phrase.changeset(%{phrase: fetch(phrase)})
+    changeset =
+      %Phrase{}
+      |> Phrase.changeset(%{phrase: fetch(phrase)})
 
     case SlackBot.Repo.insert(changeset) do
       {:ok, _} -> {:ok, gettext("The message was registered successfully :blush:")}
@@ -62,7 +65,7 @@ defmodule SlackBot.MessageBrain.AddMessage do
   end
 end
 
-defmodule  SlackBot.MessageBrain.DeleteMessage do
+defmodule SlackBot.MessageBrain.DeleteMessage do
   @moduledoc false
 
   use SlackBot.MessageBrain, identifier: "delete message"
@@ -71,21 +74,25 @@ defmodule  SlackBot.MessageBrain.DeleteMessage do
 
   alias SlackBot.Schema.Phrase
 
-  @spec execute(String.t) :: tuple
+  @spec execute(String.t()) :: tuple
   def execute(phrase) do
     phrase = fetch(phrase)
     query = Phrase |> where([p], p.phrase == ^phrase)
 
     phrases = SlackBot.Repo.all(query)
-    case length phrases do
-      0 -> {:error, gettext("%{phrase} is not found :sweat_smile:", phrase: phrase)}
-      _ -> for phrase <- phrases, do: SlackBot.Repo.delete(phrase)
-           {:ok, gettext("%{phrase} was deleted successfully :+1:", phrase: phrase)}
+
+    case length(phrases) do
+      0 ->
+        {:error, gettext("%{phrase} is not found :sweat_smile:", phrase: phrase)}
+
+      _ ->
+        for phrase <- phrases, do: SlackBot.Repo.delete(phrase)
+        {:ok, gettext("%{phrase} was deleted successfully :+1:", phrase: phrase)}
     end
   end
 end
 
-defmodule  SlackBot.MessageBrain.MessageList do
+defmodule SlackBot.MessageBrain.MessageList do
   @moduledoc false
 
   use SlackBot.MessageBrain, identifier: "message list"
@@ -94,13 +101,14 @@ defmodule  SlackBot.MessageBrain.MessageList do
 
   alias SlackBot.Schema.Phrase
 
-  @spec execute(String.t) :: tuple
+  @spec execute(String.t()) :: tuple
   def execute(_phrase) do
-    phrases = Phrase
-              |> select([p], p.phrase)
-              |> SlackBot.Repo.all
+    phrases =
+      Phrase
+      |> select([p], p.phrase)
+      |> SlackBot.Repo.all()
 
-    case length phrases do
+    case length(phrases) do
       0 -> {:ok, gettext("not found phrase")}
       _ -> {:ok, phrases}
     end

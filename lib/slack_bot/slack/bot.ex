@@ -5,7 +5,7 @@ defmodule SlackBot.Slack.Bot do
 
   alias SlackBot.MessageBrain.Switcher
 
-  @spec react_to_message(tuple, Slack.State.t) :: tuple
+  @spec react_to_message(tuple, Slack.State.t()) :: tuple
   def react_to_message(%{subtype: "message_changed"}, _), do: {:skip}
   def react_to_message(%{subtype: "message_deleted"}, _), do: {:skip}
   def react_to_message(%{subtype: "channel_join"}, _), do: {:skip}
@@ -15,6 +15,7 @@ defmodule SlackBot.Slack.Bot do
 
   @spec interpret_attachment(list(tuple)) :: tuple
   def interpret_attachment([]), do: {:skip}
+
   def interpret_attachment([attachment | attachments]) do
     interpret_attachment(attachments)
 
@@ -25,7 +26,7 @@ defmodule SlackBot.Slack.Bot do
     end
   end
 
-  @spec interpret_message(tuple, String.t) :: tuple
+  @spec interpret_message(tuple, String.t()) :: tuple
   def interpret_message(message, bot_id) do
     if message_to_myself(message, bot_id) do
       case Switcher.switch(message.text).execute(message.text) do
@@ -35,15 +36,19 @@ defmodule SlackBot.Slack.Bot do
           else
             {:send_message, messages}
           end
-        {:error, error_messages} -> {:send_message, error_messages |> Enum.join("\n")}
-        {:skip} -> {:skip}
+
+        {:error, error_messages} ->
+          {:send_message, error_messages |> Enum.join("\n")}
+
+        {:skip} ->
+          {:skip}
       end
     else
       {:skip}
     end
   end
 
-  @spec message_to_myself(%{text: String.t}, String.t) :: boolean
+  @spec message_to_myself(%{text: String.t()}, String.t()) :: boolean
   def message_to_myself(message, bot_id) do
     String.match?(message.text, ~r/<@#{bot_id}>/)
   end

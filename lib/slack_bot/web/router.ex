@@ -3,10 +3,10 @@ defmodule SlackBot.Web.Router do
 
   alias Slack.Web.Chat
 
-  plug Plug.Parsers, parsers: [:urlencoded, :multipart]
+  plug(Plug.Parsers, parsers: [:urlencoded, :multipart])
 
-  plug :match
-  plug :dispatch
+  plug(:match)
+  plug(:dispatch)
 
   get "/ping" do
     conn
@@ -29,8 +29,14 @@ defmodule SlackBot.Web.Router do
 
   def echo(conn) do
     case Map.fetch(conn.params, "message") do
-      {:ok, message} -> Chat.post_message("bot-sandbox", message, %{token: System.get_env("SLACK_BOT_API_TOKEN"), as_user: true})
-      _ -> {:ok}
+      {:ok, message} ->
+        Chat.post_message("bot-sandbox", message, %{
+          token: System.get_env("SLACK_BOT_API_TOKEN"),
+          as_user: true
+        })
+
+      _ ->
+        {:ok}
     end
 
     conn

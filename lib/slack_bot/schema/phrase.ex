@@ -4,7 +4,7 @@ defmodule SlackBot.Schema.Phrase do
   use Ecto.Schema
 
   schema "phrases" do
-    field :phrase, :string
+    field(:phrase, :string)
   end
 
   def changeset(phrase, params \\ %{}) do

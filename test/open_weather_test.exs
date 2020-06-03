@@ -4,26 +4,31 @@ defmodule OpenWeatherTest do
   doctest OpenWeather
 
   setup_all do
-    HTTPoison.start
+    HTTPoison.start()
   end
 
   describe "weather/1" do
     test "Returns Osaka weather in json format" do
       use_cassette "openweather/osaka_weather" do
         {:ok, weather} = OpenWeather.weather("Osaka")
-        target =
-          %{"description" => "light rain",
-            "icon" => "10n",
-            "icon_url" => "http://openweathermap.org/img/wn/10n@2x.png",
-            "id" => 500,
-            "main" => "Rain"}
+
+        target = %{
+          "description" => "light rain",
+          "icon" => "10n",
+          "icon_url" => "http://openweathermap.org/img/wn/10n@2x.png",
+          "id" => 500,
+          "main" => "Rain"
+        }
+
         assert weather == target
       end
     end
 
     test "Not found city" do
       use_cassette "openweather/not_found_city" do
-        {:error, %{status_code: status_code, message: message}} = OpenWeather.weather("NotExistCity")
+        {:error, %{status_code: status_code, message: message}} =
+          OpenWeather.weather("NotExistCity")
+
         assert status_code == 404
         assert message == "city not found"
       end

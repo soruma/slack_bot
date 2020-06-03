@@ -23,12 +23,16 @@ defmodule OpenWeather do
          }
        ]}
   """
-  @spec weather(String.t) :: tuple
+  @spec weather(String.t()) :: tuple
   def weather(city) do
-    result =  case _weather(city) do
-                {:ok, %{response: response}} -> {:ok, hd(response["weather"])}
-                {:error, %{status_code: status_code, message: message}} -> {:error, %{status_code: status_code, message: message}}
-              end
+    result =
+      case _weather(city) do
+        {:ok, %{response: response}} ->
+          {:ok, hd(response["weather"])}
+
+        {:error, %{status_code: status_code, message: message}} ->
+          {:error, %{status_code: status_code, message: message}}
+      end
 
     if elem(result, 0) == :ok do
       weather = elem(result, 1)
@@ -49,17 +53,24 @@ defmodule OpenWeather do
 
       "http://openweathermap.org/img/wn/02d@2x.png"
   """
-  @spec icon_url(String.t) :: String.t
+  @spec icon_url(String.t()) :: String.t()
   def icon_url(id), do: "http://openweathermap.org/img/wn/#{id}@2x.png"
 
   defp _weather(city) do
     url = "http://api.openweathermap.org/data/2.5/weather?q=#{city}&appid=#{@appid}"
 
     case HTTPoison.get(url) do
-      {:ok, %HTTPoison.Response{status_code: 200, body: body}} -> {:ok, %{response: Jason.decode!(body)}}
-      {:ok, %HTTPoison.Response{status_code: 401, body: body}} -> {:error, %{status_code: 401, message: Jason.decode!(body)["message"]}}
-      {:ok, %HTTPoison.Response{status_code: 404, body: body}} -> {:error, %{status_code: 404, message: Jason.decode!(body)["message"]}}
-      {:error, %HTTPoison.Error{id: nil, reason: reason}} -> {:error, %{status_code: nil, message: reason}}
+      {:ok, %HTTPoison.Response{status_code: 200, body: body}} ->
+        {:ok, %{response: Jason.decode!(body)}}
+
+      {:ok, %HTTPoison.Response{status_code: 401, body: body}} ->
+        {:error, %{status_code: 401, message: Jason.decode!(body)["message"]}}
+
+      {:ok, %HTTPoison.Response{status_code: 404, body: body}} ->
+        {:error, %{status_code: 404, message: Jason.decode!(body)["message"]}}
+
+      {:error, %HTTPoison.Error{id: nil, reason: reason}} ->
+        {:error, %{status_code: nil, message: reason}}
     end
   end
 end

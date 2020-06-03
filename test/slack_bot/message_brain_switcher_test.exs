@@ -83,14 +83,14 @@ defmodule SlackBot.MessageBrain.AddMessageTest do
       {:ok, send_message} = AddMessage.execute("Hi bot add message test message")
       assert "The message was registered successfully :blush:" = send_message
 
-      assert 1 = length Repo.all(Phrase |> where([p], p.phrase == "test message"))
+      assert 1 = length(Repo.all(Phrase |> where([p], p.phrase == "test message")))
     end
 
     test "record not add if invalid param" do
       {:error, send_message} = AddMessage.execute("Hi bot")
       assert ["Phrase can't be blank"] = send_message
 
-      assert 0 = length Repo.all(Phrase)
+      assert 0 = length(Repo.all(Phrase))
     end
   end
 end
@@ -105,14 +105,16 @@ defmodule SlackBot.MessageBrain.DeleteMessageTest do
 
   describe "execute/1" do
     test "delete record Phrase if matches phrase" do
-      SlackBot.Repo.insert %Phrase{phrase: "target message"}
+      SlackBot.Repo.insert(%Phrase{phrase: "target message"})
 
       {:ok, send_message} = DeleteMessage.execute("Hi bot delete message target message")
       assert "target message was deleted successfully :+1:" = send_message
 
-      query = Phrase
-              |> where([p], p.phrase == "target message")
-              |> select([p], count(p.id))
+      query =
+        Phrase
+        |> where([p], p.phrase == "target message")
+        |> select([p], count(p.id))
+
       assert [0] = Repo.all(query)
     end
 
@@ -133,7 +135,7 @@ defmodule SlackBot.MessageBrain.MessageListTest do
 
   describe "execute/1" do
     test "return phrase list" do
-      SlackBot.Repo.insert_all Phrase, [%{phrase: "test message"}, %{phrase: "message"}]
+      SlackBot.Repo.insert_all(Phrase, [%{phrase: "test message"}, %{phrase: "message"}])
 
       assert {:ok, ["test message", "message"]} = MessageList.execute("message list")
     end
