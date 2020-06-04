@@ -1,5 +1,5 @@
 defmodule OpenWeather do
-  @appid Application.get_env(:open_weather, :api_key)
+  @appid Application.get_env(:slack_bot, :open_weather_api_key)
 
   @moduledoc """
   Documentation for OpenWeather.

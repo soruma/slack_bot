@@ -6,7 +6,11 @@ defmodule SlackBot.Application do
   use Application
 
   def start(_type, _args) do
-    Slack.Bot.start_link(SlackBot.Slack.Rtm, [], Application.get_env(:slack_bot, :api_token))
+    Slack.Bot.start_link(
+      SlackBot.Slack.Rtm,
+      [],
+      Application.get_env(:slack_bot, :slack_api_token)
+    )
 
     children = [
       # Starts a worker by calling: SlackBot.Worker.start_link(arg)
