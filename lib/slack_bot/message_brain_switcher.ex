@@ -6,7 +6,8 @@ defmodule SlackBot.MessageBrain.Switcher do
     [
       SlackBot.MessageBrain.AddMessage,
       SlackBot.MessageBrain.DeleteMessage,
-      SlackBot.MessageBrain.MessageList
+      SlackBot.MessageBrain.MessageList,
+      SlackBot.MessageBrain.Weather
     ]
     |> Enum.find(
       SlackBot.MessageBrain.Nil,
@@ -112,5 +113,18 @@ defmodule SlackBot.MessageBrain.MessageList do
       0 -> {:ok, gettext("not found phrase")}
       _ -> {:ok, phrases}
     end
+  end
+end
+
+defmodule SlackBot.MessageBrain.Weather do
+  @moduledoc false
+
+  use SlackBot.MessageBrain, identifier: "weather"
+
+  @spec execute(String.t()) :: tuple
+  def execute(_phrase) do
+    {:ok, weather} = OpenWeather.weather("Osaka")
+
+    {:ok, weather["icon_url"]}
   end
 end
