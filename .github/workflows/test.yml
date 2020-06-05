@@ -35,9 +35,7 @@ jobs:
         path: _build/test
         key: ${{ runner.os }}-build-${{ hashFiles('**/mix.lock') }}
 
-    - run: mix deps.get
-
-    - run: mix compile
+    - run: mix do deps.get, deps.compile
 
     - run: mix credo
 
